@@ -23,21 +23,22 @@ This module takes the following variables as input:
 - **keypair_name**: Name of the ssh keypair that will be used to ssh against the vm.
 
 - **chrony**: Optional chrony configuration for when you need a more fine-grained ntp setup on your vm. It is an object with the following fields:
-  - **enabled**: If set the false (the default), chrony will not be installed and the vm ntp settings will be left to default.
+  - **enabled**: If set to false (the default), chrony will not be installed and the vm ntp settings will be left to default.
   - **servers**: List of ntp servers to sync from with each entry containing two properties, **url** and **options** (see: https://chrony.tuxfamily.org/doc/4.2/chrony.conf.html#server)
   - **pools**: A list of ntp server pools to sync from with each entry containing two properties, **url** and **options** (see: https://chrony.tuxfamily.org/doc/4.2/chrony.conf.html#pool)
   - **makestep**: An object containing remedial instructions if the clock of the vm is significantly out of sync at startup. It is an object containing two properties, **threshold** and **limit** (see: https://chrony.tuxfamily.org/doc/4.2/chrony.conf.html#makestep)
 
-- **fluentbit**: Optional fluent-bit configuration to securely route logs to a fluend/fluent-bit node using the forward plugin. Alternatively, configuration can be 100% dynamic by specifying the parameters of an etcd store or git repo to fetch the configuration from. It has the following keys:
-  - **enabled**: If set the false (the default), fluent-bit will not be installed.
-  - **metrics**: Configuration for metrics fluentbit exposes.
+- **fluentbit**: Optional fluent-bit configuration to securely route logs to a fluentd/fluent-bit node using the forward plugin. Alternatively, configuration can be 100% dynamic by specifying the parameters of an etcd store to fetch the configuration from. It has the following keys:
+  - **enabled**: If set to false (the default), fluent-bit will not be installed.
+  - **starrocks_tag** Tag to assign to logs coming from StarRocks log file (`fe.log` for a FE node, otherwise *`node_type`*`.INFO`)
+  - **starrocks_read_from_head** If set to true (the default), StarRocks log file will be read from its head instead of tail, when the file is being discovered for the first time
+  - **node_exporter_tag** Tag to assign to logs coming from Prometheus Node Exporter systemd service
+  - **metrics**: Configuration for metrics fluentbit exposes. It has the following keys:
     - **enabled**: Whether to enable the metrics or not
     - **port**: Port to expose the metrics on
-  - **patroni_tag**: Tag to assign to logs coming from patroni
-  - **node_exporter_tag** Tag to assign to logs coming from the prometheus node exporter
-  - **forward**: Configuration for the forward plugin that will talk to the external fluend/fluent-bit node. It has the following keys:
-    - **domain**: Ip or domain name of the remote fluend node.
-    - **port**: Port the remote fluend node listens on
+  - **forward**: Configuration for the forward plugin that will talk to the external fluentd/fluent-bit node. It has the following keys:
+    - **domain**: Ip or domain name of the remote fluentd node.
+    - **port**: Port the remote fluentd node listens on
     - **hostname**: Unique hostname identifier for the vm
     - **shared_key**: Secret shared key with the remote fluentd node to authentify the client
     - **ca_cert**: CA certificate that signed the remote fluentd node's server certificate (used to authentify it)
@@ -68,6 +69,15 @@ This module takes the following variables as input:
     - **auth**: Authentication to the git server. It should have the following keys:
       - **client_ssh_key** Private client ssh key to authentication to the server.
       - **server_ssh_fingerprint**: Public ssh fingerprint of the server that will be used to authentify it.
+
+- **vault_agent**: Parameters for the optional vault agent that will be used to manage the dynamic secrets in the vm.
+  - **enabled**: If set to true, a vault agent service will be setup and will run in the vm.
+  - **auth_method**: Auth method the vault agent will use to authenticate with vault. Currently, only approle is supported.
+    - **config**: Configuration parameters for the auth method.
+      - **role_id**: Id of the app role to us.
+      - **secret_id**: Authentication secret to use the app role.
+  - **vault_address**: Endpoint to use to talk to vault.
+  - **vault_ca_cert**: CA certificate to use to validate vault's certificate.
 
 - **install_dependencies**: Whether cloud-init should install external dependencies (should be set to false if you already provide an image with the external dependencies built-in). Default to **true**.
 

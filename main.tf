@@ -96,7 +96,7 @@ module "fluentbit_updater_git_configs" {
 }
 
 module "fluentbit_configs" {
-  source = "git::https://github.com/Ferlab-Ste-Justine/terraform-cloudinit-templates.git//fluent-bit?ref=v0.39.1"
+  source = "git::https://github.com/Ferlab-Ste-Justine/terraform-cloudinit-templates.git//fluent-bit?ref=v0.41.1"
   install_dependencies = var.install_dependencies
   fluentbit = {
     metrics = var.fluentbit.metrics
@@ -118,6 +118,17 @@ module "fluentbit_configs" {
   dynamic_config = {
     enabled = var.fluentbit_dynamic_config.enabled
     entrypoint_path = "/etc/fluent-bit-customization/dynamic-config/index.conf"
+  }
+}
+
+module "vault_agent_configs" {
+  source = "git::https://github.com/Ferlab-Ste-Justine/terraform-cloudinit-templates.git//vault-agent?ref=v0.41.1"
+  install_dependencies = var.install_dependencies
+  vault_agent = {
+    auth_method = var.vault_agent.auth_method
+    vault_address = var.vault_agent.vault_address
+    vault_ca_cert = var.vault_agent.vault_ca_cert
+    extra_config = ""
   }
 }
 
@@ -164,6 +175,11 @@ locals {
       filename     = "fluent_bit.cfg"
       content_type = "text/cloud-config"
       content      = module.fluentbit_configs.configuration
+    }] : [],
+    var.vault_agent.enabled ? [{
+      filename     = "vault_agent.cfg"
+      content_type = "text/cloud-config"
+      content      = module.vault_agent_configs.configuration
     }] : []
   )
 }

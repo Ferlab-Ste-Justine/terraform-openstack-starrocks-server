@@ -193,6 +193,31 @@ variable "fluentbit_dynamic_config" {
   }
 }
 
+variable "vault_agent" {
+  type = object({
+    enabled = bool
+    auth_method = object({
+      config = object({
+        role_id   = string
+        secret_id = string
+      })
+    })
+    vault_address   = string
+    vault_ca_cert   = string
+  })
+  default = {
+    enabled = false
+    auth_method = {
+      config = {
+        role_id   = ""
+        secret_id = ""
+      }
+    }
+    vault_address = ""
+    vault_ca_cert = ""
+  }
+}
+
 variable "install_dependencies" {
   description = "Whether to install all dependencies in cloud-init"
   type = bool
