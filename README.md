@@ -86,5 +86,5 @@ This module takes the following variables as input:
 - **starrocks**: StarRocks configuration. It has the following keys:
   - **release_version**: StarRocks release version to install. Defaults to **3.4.1**.
   - **node_type**: StarRocks node type to configure, either **fe** or **be**.
-  - **fe_config**: StarRocks FE-related settings (**initial_leader** + **initial_follower** + **ssl** + **iceberg_rest**). Only needed if **node_type** is set to **fe**.
+  - **fe_config**: StarRocks FE-related settings (**initial_leader** + **initial_follower** + **ssl** + **iceberg_rest** + **meta_dir** that defaults to **/opt/starrocks/meta**). Only needed if **node_type** is set to **fe**.
   - **be_storage_root_path**: Starrocks BE storage root path. Defaults to **/opt/starrocks/storage**.
