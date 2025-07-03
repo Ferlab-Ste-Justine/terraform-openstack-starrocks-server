@@ -140,7 +140,7 @@ locals {
         content = templatefile(
           "${path.module}/files/user_data.yaml.tpl", 
           {
-            hostname = var.name
+            fqdn                 = var.fqdn
             install_dependencies = var.install_dependencies
           }
         )

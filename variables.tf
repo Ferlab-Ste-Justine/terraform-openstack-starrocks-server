@@ -3,6 +3,11 @@ variable "name" {
   type        = string
 }
 
+variable "fqdn" {
+  description = "FQDN to give to the vm. Will be the hostname as well."
+  type        = string
+}
+
 variable "image_source" {
   description = "Source of the vm's image"
   type = object({

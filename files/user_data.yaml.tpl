@@ -7,6 +7,8 @@ merge_how:
 
 ssh_pwauth: false
 preserve_hostname: false
-hostname: ${hostname}
+hostname: ${fqdn}
+fqdn: ${fqdn}
+prefer_fqdn_over_hostname: true
 users:
   - default
