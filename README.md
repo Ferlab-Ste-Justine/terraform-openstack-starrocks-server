@@ -85,6 +85,8 @@ This module takes the following variables as input:
 
 - **timezone**: Timezone to set on each node. Defaults to **America/Montreal**.
 
+- **fqdn_patch**: Whether to apply patch to add FQDN for localhost in `/etc/hosts`, to fix communication issues with the FE leader. Defaults to **false**.
+
 - **starrocks**: StarRocks configuration. It has the following keys:
   - **release_version**: StarRocks release version to install. Defaults to **3.4.1**.
   - **node_type**: StarRocks node type to configure, either **fe** or **be**.

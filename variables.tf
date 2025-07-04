@@ -235,6 +235,12 @@ variable "timezone" {
   default     = "America/Montreal"
 }
 
+variable "fqdn_patch" {
+  description = "Whether to apply patch to add FQDN for localhost in /etc/hosts"
+  type        = bool
+  default     = false
+}
+
 variable "starrocks" {
   description = "Configuration for the starrocks server"
   type        = object({
