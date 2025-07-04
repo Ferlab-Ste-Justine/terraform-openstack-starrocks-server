@@ -14,8 +14,8 @@ module "starrocks_configs" {
   source               = "git::https://github.com/Ferlab-Ste-Justine/terraform-cloudinit-templates.git//starrocks?ref=v0.42.3"
   install_dependencies = var.install_dependencies
   timezone             = var.timezone
-  fqdn_patch           = {
-    enabled = var.fqdn_patch
+  hosts_file_patch     = {
+    enabled = var.hosts_file_patch
     fqdn    = var.fqdn
   }
   release_version      = var.starrocks.release_version

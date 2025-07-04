@@ -235,10 +235,10 @@ variable "timezone" {
   default     = "America/Montreal"
 }
 
-variable "fqdn_patch" {
-  description = "Whether to apply patch to add FQDN for localhost in /etc/hosts"
+variable "hosts_file_patch" {
+  description = "Whether to apply patch to add FQDN for the node IP in /etc/hosts"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "starrocks" {
